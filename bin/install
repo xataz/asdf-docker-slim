@@ -57,14 +57,9 @@ install () {
   fi
 }
 
-get_arch () {
-  local arch=$(uname | tr '[:upper:]' '[:lower:]')
-
-  if [ "${arch}" = "darwin" ]; then
-    arch="mac"
-  fi
-
-  echo "${arch}"
+fail() {
+  echo -e "\e[31mFail:\e[m $*"
+  exit 1
 }
 
 get_filename () {
@@ -77,16 +72,39 @@ get_filename () {
 
 get_download_url () {
   local -r version="$1"
+  local platform
 
-  local -r _exists="curl --output /dev/null --silent --fail --head"
-  local -r zip_archive=$(get_filename "${version}" ".zip")
-  local -r targz_archive=$(get_filename "${version}" ".tar.gz")
+  case "$OSTYPE" in
+    darwin*) platform="darwin" ;;
+    linux*) platform="linux" ;;
+     *) fail "Unsupported platform" ;;
+  esac
 
-  if ${_exists} "https://github.com/slimtoolkit/slim/releases/download/${zip_archive}"; then
-    echo "https://github.com/slimtoolkit/slim/releases/download/${zip_archive}"
-  elif ${_exists} "https://github.com/slimtoolkit/slim/releases/download/${targz_archive}"; then
-    echo "https://github.com/slimtoolkit/slim/releases/download/${targz_archive}"
+  local architecture
+
+  case "$(uname -m)" in
+    aarch64* | arm64) architecture="arm64" ;;
+    armv5* | armv6* | armv7*) architecture="arm" ;;
+    x86_64*) architecture="amd64" ;;
+    *) fail "Unsupported architecture" ;;
+  esac
+  
+  if [ "$platform" == "darwin" ]; then
+    if [ "$architecture" == "arm64" ]; then
+      echo https://downloads.dockerslim.com/releases/${version}/dist_mac.tar.gz
+    elif [ "$architecture" == "amd64" ]; then
+      echo https://downloads.dockerslim.com/releases/${version}/dist_mac_m1.tar.gz
+    fi
+  elif [ "$platform" == "linux" ]; then
+    if [ "$architecture" == "arm" ]; then
+      echo https://downloads.dockerslim.com/releases/${version}/dist_linux_arm.tar.gz
+    elif [ "$architecture" == "arm64" ]; then
+      echo https://downloads.dockerslim.com/releases/${version}/dist_linux_arm64.tar.gz
+    elif [ "$architecture" == "amd64" ]; then
+      echo https://downloads.dockerslim.com/releases/${version}/dist_linux.tar.gz
+    fi
   fi
+
 }
 
 install "${ASDF_INSTALL_TYPE}" "${ASDF_INSTALL_VERSION}" "${ASDF_INSTALL_PATH}"
