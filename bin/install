@@ -11,8 +11,7 @@ set \
 : "${ASDF_INSTALL_PATH?}"
 
 # make a temporary download directory with a cleanup hook
-readonly TMP_DOWNLOAD_DIR
-TMP_DOWNLOAD_DIR="$(mktemp -d -t "asdf_docker-slim_XXXXXX")"
+readonly TMP_DOWNLOAD_DIR="$(mktemp -d -t "asdf_docker-slim_XXXXXX")"
 
 trap 'rm -rf "${TMP_DOWNLOAD_DIR?}"' EXIT
 
