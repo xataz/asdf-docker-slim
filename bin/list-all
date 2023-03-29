@@ -14,42 +14,11 @@ get_git_tags () {
   for tag in $(git ls-remote --tags "${repo_url}"); do
     if [[ ${tag} =~ refs/tags/${VER_REGEX}$ ]]; then
         version="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}"
-        if curl --output /dev/null --silent --fail --head "$(get_download_url "${version}")"; then
-          echo "${version}"
-        elif curl --output /dev/null --silent --fail --head "$(get_download_url "${version}" ".tar.gz")"; then
-          echo "${version}"
-        fi
+        echo ${version}
     fi
   done \
       | LC_ALL=C sort -t '.' -k 1,1n -k 2,2n \
       | tr '\n' ' '
-}
-
-get_arch () {
-  local arch=$(uname | tr '[:upper:]' '[:lower:]')
-
-  if [ "${arch}" = "darwin" ]; then
-    arch="mac"
-  fi
-
-  echo "${arch}"
-}
-
-get_filename () {
-  local -r version="$1"
-  local -r ext="$2"
-
-  local -r arch="$(get_arch)"
-  
-  echo "${version}/dist_${arch}${ext}"
-}
-
-get_download_url () {
-  local -r version="$1"
-  local -r ext="${2:-.zip}"
-
-  local -r filename="$(get_filename "${version}" "${ext}")"
-  echo "https://github.com/slimtoolkit/slim/releases/download/${filename}"
 }
 
 list_all () {
