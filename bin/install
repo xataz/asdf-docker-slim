@@ -11,7 +11,8 @@ set \
 : "${ASDF_INSTALL_PATH?}"
 
 # make a temporary download directory with a cleanup hook
-readonly TMP_DOWNLOAD_DIR="$(mktemp -d -t "asdf_docker-slim_XXXXXX")"
+TMP_DOWNLOAD_DIR="$(mktemp -d -t "asdf_docker-slim_XXXXXX")"
+readonly TMP_DOWNLOAD_DIR
 
 trap 'rm -rf "${TMP_DOWNLOAD_DIR?}"' EXIT
 
@@ -92,9 +93,9 @@ get_download_url () {
   
   if [ "$platform" == "darwin" ]; then
     if [ "$architecture" == "arm64" ]; then
-      echo https://downloads.dockerslim.com/releases/"${version}"/dist_mac.zip
-    elif [ "$architecture" == "amd64" ]; then
       echo https://downloads.dockerslim.com/releases/"${version}"/dist_mac_m1.zip
+    elif [ "$architecture" == "amd64" ]; then
+      echo https://downloads.dockerslim.com/releases/"${version}"/dist_mac.zip
     fi
   elif [ "$platform" == "linux" ]; then
     if [ "$architecture" == "arm" ]; then

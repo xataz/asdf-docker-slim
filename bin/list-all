@@ -22,8 +22,7 @@ get_git_tags () {
 }
 
 list_all () {
-  echo "$(get_git_tags "https://github.com/slimtoolkit/slim")" \
-      | tr -s ' '
+  get_git_tags "https://github.com/slimtoolkit/slim" | tr -s ' '
 }
 
 list_all
