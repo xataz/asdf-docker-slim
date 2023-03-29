@@ -49,11 +49,11 @@ get_download_url () {
   local -r ext="${2:-.zip}"
 
   local -r filename="$(get_filename "${version}" "${ext}")"
-  echo "https://github.com/docker-slim/docker-slim/releases/download/${filename}"
+  echo "https://github.com/slimtoolkit/slim/releases/download/${filename}"
 }
 
 list_all () {
-  echo "$(get_git_tags "https://github.com/docker-slim/docker-slim")" \
+  echo "$(get_git_tags "https://github.com/slimtoolkit/slim")" \
       | tr -s ' '
 }
 
