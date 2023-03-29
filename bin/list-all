@@ -5,7 +5,7 @@ set \
   -o pipefail \
   -o errexit
 
-readonly VER_REGEX='(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)'
+readonly VER_REGEX='(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)'
 
 get_git_tags () {
   local -r repo_url="$1"
