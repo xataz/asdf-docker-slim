@@ -6,16 +6,18 @@ set \
   -o errexit
 
 # required environment variables
-: ${ASDF_INSTALL_TYPE?}
-: ${ASDF_INSTALL_VERSION?}
-: ${ASDF_INSTALL_PATH?}
+: "${ASDF_INSTALL_TYPE?}"
+: "${ASDF_INSTALL_VERSION?}"
+: "${ASDF_INSTALL_PATH?}"
 
 # make a temporary download directory with a cleanup hook
-readonly TMP_DOWNLOAD_DIR="$(mktemp -d -t "asdf_docker-slim_XXXXXX")"
+readonly TMP_DOWNLOAD_DIR
+TMP_DOWNLOAD_DIR="$(mktemp -d -t "asdf_docker-slim_XXXXXX")"
+
 trap 'rm -rf "${TMP_DOWNLOAD_DIR?}"' EXIT
 
 install () {
-  local -r install_type="$1"
+  # local -r install_type="$1"
   local -r version="$2"
   local -r install_path="$3"
 
@@ -91,17 +93,17 @@ get_download_url () {
   
   if [ "$platform" == "darwin" ]; then
     if [ "$architecture" == "arm64" ]; then
-      echo https://downloads.dockerslim.com/releases/${version}/dist_mac.tar.gz
+      echo https://downloads.dockerslim.com/releases/"${version}"/dist_mac.zip
     elif [ "$architecture" == "amd64" ]; then
-      echo https://downloads.dockerslim.com/releases/${version}/dist_mac_m1.tar.gz
+      echo https://downloads.dockerslim.com/releases/"${version}"/dist_mac_m1.zip
     fi
   elif [ "$platform" == "linux" ]; then
     if [ "$architecture" == "arm" ]; then
-      echo https://downloads.dockerslim.com/releases/${version}/dist_linux_arm.tar.gz
+      echo https://downloads.dockerslim.com/releases/"${version}"/dist_linux_arm.tar.gz
     elif [ "$architecture" == "arm64" ]; then
-      echo https://downloads.dockerslim.com/releases/${version}/dist_linux_arm64.tar.gz
+      echo https://downloads.dockerslim.com/releases/"${version}"/dist_linux_arm64.tar.gz
     elif [ "$architecture" == "amd64" ]; then
-      echo https://downloads.dockerslim.com/releases/${version}/dist_linux.tar.gz
+      echo https://downloads.dockerslim.com/releases/"${version}"/dist_linux.tar.gz
     fi
   fi
 
