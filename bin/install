@@ -82,10 +82,10 @@ get_download_url () {
   local -r zip_archive=$(get_filename "${version}" ".zip")
   local -r targz_archive=$(get_filename "${version}" ".tar.gz")
 
-  if ${_exists} "https://github.com/docker-slim/docker-slim/releases/download/${zip_archive}"; then
-    echo "https://github.com/docker-slim/docker-slim/releases/download/${zip_archive}"
-  elif ${_exists} "https://github.com/docker-slim/docker-slim/releases/download/${targz_archive}"; then
-    echo "https://github.com/docker-slim/docker-slim/releases/download/${targz_archive}"
+  if ${_exists} "https://github.com/slimtoolkit/slim/releases/download/${zip_archive}"; then
+    echo "https://github.com/slimtoolkit/slim/releases/download/${zip_archive}"
+  elif ${_exists} "https://github.com/slimtoolkit/slim/releases/download/${targz_archive}"; then
+    echo "https://github.com/slimtoolkit/slim/releases/download/${targz_archive}"
   fi
 }
 
