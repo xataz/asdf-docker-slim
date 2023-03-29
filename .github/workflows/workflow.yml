@@ -17,6 +17,8 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: Uname
+        run: uname -a
       - name: asdf_plugin_test
         uses: asdf-vm/actions/plugin-test@v1
         with:
