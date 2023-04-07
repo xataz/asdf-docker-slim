@@ -7,8 +7,16 @@ on:
     - cron: "0 0 * * 5"
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
 
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run ShellCheck
+        run: shellcheck bin/*
+        
   plugin_test:
+    needs: [lint]
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
@@ -25,10 +33,4 @@ jobs:
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  lint:
-    runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v1
-      - name: Run ShellCheck
-        run: shellcheck bin/*
